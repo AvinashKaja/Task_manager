@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Task Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 8px 12px;
+            font-size: 14px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .message {
+            padding: 10px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            width: fit-content;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📝 Task Management</h1>
+
+<!-- Show success message if present -->
+<div class="message" th:if="${message}" th:text="${message}"></div>
+
+<!-- Task input form -->
+<form th:action="@{/task_entity/add}" method="post" th:object="${newTask}">
+    <input type="text" th:field="*{name}" placeholder="Enter task" required />
+    <button type="submit">Add Task</button>
+</form>
+
+<!-- Task Table -->
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Completed</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${tasks}">
+        <td th:text="${task.id}">1</td>
+        <td th:text="${task.name}">Sample Task</td>
+        <td th:text="${task.completed ? 'Yes' : 'No'}">No</td>
+        <td>
+            <a th:href="@{'/task_entity/complete/' + ${task.id}}">✔️ Complete</a> |
+            <a th:href="@{'/task_entity/delete/' + ${task.id}}">🗑️ Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<a th:href="@{/task_entity/deleteAll}">❌ Delete All Tasks</a>
+
+</body>
+</html>
